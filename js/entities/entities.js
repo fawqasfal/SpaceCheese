@@ -29,19 +29,15 @@ game.PlayerEntity = me.Entity.extend({
    * update the player pos
    */
   update : function (dt) {
+    this.pos.y += this.velx * dt / 500 * Math.sin(this.renderable.angle - Math.PI / 2);
+    this.pos.x += this.velx * dt / 500 * Math.cos(this.renderable.angle - Math.PI / 2);
     this._super(me.Sprite, "update", [dt]);
     if (me.input.isKeyPressed("left")) {
-        this.pos.x -= this.velx * dt / 1000;
+        this.renderable.angle -= 4 * (Math.PI / 180);
     }
 
     if (me.input.isKeyPressed("right")) {
-        this.pos.x += this.velx * dt / 1000;
-    }
-    if (me.input.isKeyPressed("up")) {
-        this.pos.y -= this.velx * dt / 1000;
-    }
-    if (me.input.isKeyPressed("down")) {
-        this.pos.y += this.velx * dt / 1000;
+        this.renderable.angle += 4 * (Math.PI / 180);
     }
 
     return true;
