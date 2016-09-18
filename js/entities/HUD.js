@@ -63,7 +63,7 @@ game.HUD.ScoreItem = me.Renderable.extend( {
    * draw the score
    */
   draw : function (renderer) {
-    string = "R: " + game.data.score;
+    string = game.date;
     this.font.draw (renderer, string, this.pos.x, this.pos.y);
   }
 });
