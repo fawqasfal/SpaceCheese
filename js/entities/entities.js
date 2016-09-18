@@ -12,8 +12,8 @@ game.PlayerEntity = me.Entity.extend({
     // set the default horizontal & vertical speed (accel vector)
     // set the display to follow our position on both axis
     me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+    me.game.viewport.setDeadzone(0,0);
 
-    console.log("Hello")
     // ensure the player is updated even when outside of the viewport
     this.alwaysUpdate = true;
 
@@ -43,8 +43,6 @@ game.PlayerEntity = me.Entity.extend({
     if (me.input.isKeyPressed("down")) {
         this.pos.y += this.velx * dt / 1000;
     }
-
-    this.pos.x = this.pos.x.clamp(0, this.maxX);
 
     return true;
   },
