@@ -32,16 +32,15 @@ game.AsteroidEntity = me.CollectableEntity.extend({
   init: function (x, y, settings) {
     // call the parent constructor
     this._super(me.CollectableEntity, 'init', [x, y , {image : "asteroid.png", width : 128, height : 128}]);
-    this.body.setVelocity(7, 7);
+    this.body.setVelocity(22, 22);
     this.body.collisionType = me.collision.types.ACTION_OBJECT;
     this.alwaysUpdate = true; 
+    console.log("I exist!");
   },
   update: function(time) {
-    this.renderable.angle += 5 * (Math.PI/ 180);
-    var xMult = Math.random() > 0.5 ? 1 : 0;
-    var yMult = Math.random() > 0.5 ? 1 : 0;
-    this.body.vel.y += yMult * this.body.accel.y * time / 1000;
-    this.body.vel.x += xMult * this.body.accel.x * time / 1000;
+    this.renderable.angle += 0.01 * (Math.PI/ 180);
+    this.body.vel.y += this.body.accel.y * time / 1000;
+    this.body.vel.x += this.body.accel.x * time / 1000;
     if (this.pos.y < 0) this.pos.y = 32000;
     if (this.pos.y > 32000) this.pos.y = 0;
     if (this.pos.x < 0) this.pos.x = 32000;
@@ -105,7 +104,7 @@ game.PlayerEntity = me.Entity.extend({
     this.body.collisionType = me.collision.types.PLAYER_OBJECT;
     this.maxX = 32000 - this.width;
     this.maxY = 32000 - this.height;
-    this.ammo = 0;
+    this.ammo = 10;
   },
 
   /*
@@ -140,6 +139,11 @@ game.PlayerEntity = me.Entity.extend({
     if (response.a.body.collisionType == me.collision.types.ACTION_OBJECT)
     { 
       this.ammo = Math.floor(this.ammo / 2);
+      if (this.ammo == 0)
+      {
+        alert("Oh no! You lost :(. You lasted " +  Math.floor((Date.now() - me.game.start) / 1000) + " seconds.");
+        window.location.reload(false);   
+      }
       game.data.score = this.ammo;
     }
     return true;

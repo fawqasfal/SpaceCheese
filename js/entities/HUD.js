@@ -2,6 +2,14 @@
  * a HUD container and child items
  */
 
+/*var url = "http://shtike.scriptrapps.io/Nasa/getdate";
+var datestring;
+fetch(url).then(function(response) {return response.json()}).then(function (json){
+    var date = JSON.parse(json);
+    datestring = date.month + "/" + date.day + "/" + date.year;
+    console.log(datestring);
+})*/
+
 game.HUD = game.HUD || {};
 
 
@@ -40,7 +48,7 @@ game.HUD.ScoreItem = me.Renderable.extend( {
 
     // create a font
     this.font = new me.BitmapFont("32x32_font", 32);
-    this.font.set("right");
+    this.font.set("left");
 
     // local copy of the global score
     this.score = -1;
@@ -63,7 +71,7 @@ game.HUD.ScoreItem = me.Renderable.extend( {
    * draw the score
    */
   draw : function (renderer) {
-    string = "R: " + game.data.score;
+    string = "C: " + game.data.score + " T: " + Math.floor((Date.now() - me.game.start) / 1000);
     this.font.draw (renderer, string, this.pos.x, this.pos.y);
   }
 });

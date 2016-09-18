@@ -54,6 +54,8 @@ var game = {
       me.input.unbindKey(me.input.KEY.SPACE);
 
       // start the game
+      alert("Welcome to Cheese Run! Your goal is to use the A and D keys to manuever around space and collect the moon cheese giblets. But be careful! If you get hit by one of the fast-flying asteroids, you will lose half your moon cheese. How long can YOU last?");
+      me.game.start = Date.now();
       me.state.change(me.state.PLAY);
     }
 };
