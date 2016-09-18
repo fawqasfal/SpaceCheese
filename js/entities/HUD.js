@@ -2,13 +2,21 @@
  * a HUD container and child items
  */
 
-/*var url = "http://shtike.scriptrapps.io/Nasa/getdate";
-var datestring;
+var url = "http://shtike.scriptrapps.io/Nasa/getDay";
+var day;
 fetch(url).then(function(response) {return response.json()}).then(function (json){
-    var date = JSON.parse(json);
-    datestring = date.month + "/" + date.day + "/" + date.year;
-    console.log(datestring);
-})*/
+       day = json;
+})
+url = "http://shtike.scriptrapps.io/Nasa/getMonth";
+var month;
+fetch(url).then(function(response) {return response.json()}).then(function (json){
+    month = json;
+})
+url = "http://shtike.scriptrapps.io/Nasa/getYear";
+var year; 
+fetch(url).then(function(response) {return response.json()}).then(function (json){
+    year = json;
+})
 
 game.HUD = game.HUD || {};
 
@@ -71,7 +79,7 @@ game.HUD.ScoreItem = me.Renderable.extend( {
    * draw the score
    */
   draw : function (renderer) {
-    string = "C: " + game.data.score + " T: " + Math.floor((Date.now() - me.game.start) / 1000);
+    string = "C:" + game.data.score + " T:" + Math.floor((Date.now() - me.game.start) / 1000) + " " + month + "/" + day + "/" + year;
     this.font.draw (renderer, string, this.pos.x, this.pos.y);
   }
 });

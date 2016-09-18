@@ -32,10 +32,9 @@ game.AsteroidEntity = me.CollectableEntity.extend({
   init: function (x, y, settings) {
     // call the parent constructor
     this._super(me.CollectableEntity, 'init', [x, y , {image : "asteroid.png", width : 128, height : 128}]);
-    this.body.setVelocity(22, 22);
+    this.body.setVelocity(21, 21);
     this.body.collisionType = me.collision.types.ACTION_OBJECT;
     this.alwaysUpdate = true; 
-    console.log("I exist!");
   },
   update: function(time) {
     this.renderable.angle += 0.01 * (Math.PI/ 180);
@@ -67,6 +66,7 @@ game.EnemyEntity = me.Entity.extend({
   init: function(x, y, settings) {
     this._super(me.Entity, 'init', [x, y, {image: "white_enemy.png", width : 71, height : 128}]);
     this.ammo = 0;
+
   }, 
 
   onCollision : function ( response, other) {
