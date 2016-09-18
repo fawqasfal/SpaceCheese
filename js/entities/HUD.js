@@ -80,6 +80,7 @@ game.HUD.ScoreItem = me.Renderable.extend( {
    */
   draw : function (renderer) {
     string = "C:" + game.data.score + " T:" + Math.floor((Date.now() - me.game.start) / 1000) + " " + month + "/" + day + "/" + year;
+
     this.font.draw (renderer, string, this.pos.x, this.pos.y);
   }
 });
