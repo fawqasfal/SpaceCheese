@@ -42,7 +42,6 @@ var game = {
 
 
 
-
       // enable the keyboard
       me.input.bindKey(me.input.KEY.LEFT, "left");
       me.input.bindKey(me.input.KEY.RIGHT, "right");
@@ -52,6 +51,7 @@ var game = {
       me.input.bindKey(me.input.KEY.DOWN, "down");
       me.input.bindKey(me.input.KEY.W, "up");
       me.input.bindKey(me.input.KEY.S, "down");
+      me.input.unbindKey(me.input.KEY.SPACE);
 
       // start the game
       me.state.change(me.state.PLAY);

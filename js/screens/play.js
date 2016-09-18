@@ -7,14 +7,13 @@ game.PlayScreen = me.ScreenObject.extend({
         me.levelDirector.loadLevel("area02");
         me.pool.register("CheeseEntity", game.CheeseEntity);
         me.pool.register("EnemyEntity", game.EnemyEntity);
+        me.pool.register("AsteroidEntity", game.AsteroidEntity);
         random_xy = [];
         for (i = 0; i < 1600; i++) {
             me.game.world.addChild(me.pool.pull("CheeseEntity", Math.random() * 32000, Math.random() * 32000));
         }
-        me.game.world.addChild(me.pool.pull("EnemyEntity", Math.random() * 1000, Math.random() * 1000));
-        me.game.world.addChild(me.pool.pull("EnemyEntity", Math.random() * 1000, Math.random() * 1000));
-        me.game.world.addChild(me.pool.pull("EnemyEntity", Math.random() * 1000, Math.random() * 1000));
-        me.game.world.addChild(me.pool.pull("EnemyEntity", Math.random() * 1000, Math.random() * 1000));
+        for (i = 0; i < 125; i++) me.game.world.addChild(me.pool.pull("AsteroidEntity", Math.random() * 32000, Math.random() * 32000));
+
 
 
 

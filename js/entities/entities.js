@@ -14,11 +14,52 @@ game.CheeseEntity = me.CollectableEntity.extend({
   // an object is touched by something (here collected)
   onCollision : function (response, other) {
     // do something when collected
-    game.data.score++; 
-    this.pos.x = Math.random(32000);
-    this.pos.y = Math.random(32000);
+    response.a.ammo += 1;
+    if (response.a.body.collisionType == me.collision.types.PLAYER_OBJECT) game.data.score++; 
+    this.pos.x = Math.floor(Math.random() * 32000);
+    this.pos.y = Math.floor(Math.random() * 32000);
 
     return false
+  }
+}
+);
+/**
+ * a Cheese entity
+ */
+game.AsteroidEntity = me.CollectableEntity.extend({
+  // extending the init function is not mandatory
+  // unless you need to add some extra initialization
+  init: function (x, y, settings) {
+    // call the parent constructor
+    this._super(me.CollectableEntity, 'init', [x, y , {image : "asteroid.png", width : 128, height : 128}]);
+    this.body.setVelocity(7, 7);
+    this.body.collisionType = me.collision.types.ACTION_OBJECT;
+    this.alwaysUpdate = true; 
+  },
+  update: function(time) {
+    this.renderable.angle += 5 * (Math.PI/ 180);
+    var xMult = Math.random() > 0.5 ? 1 : 0;
+    var yMult = Math.random() > 0.5 ? 1 : 0;
+    this.body.vel.y += yMult * this.body.accel.y * time / 1000;
+    this.body.vel.x += xMult * this.body.accel.x * time / 1000;
+    if (this.pos.y < 0) this.pos.y = 32000;
+    if (this.pos.y > 32000) this.pos.y = 0;
+    if (this.pos.x < 0) this.pos.x = 32000;
+    if (this.pos.x > 32000) this.pos.x = 0;
+    this.body.update();
+    me.collision.check(this);
+    return true;
+  },
+
+  // this function is called by the engine, when
+  // an object is touched by something (here collected)
+  onCollision : function (response, other) {
+    // do something when collected
+    if (response.a.body.collisionType == me.collision.types.PLAYER_OBJECT) {
+      response.a.pos.x = Math.floor(Math.random() * 32000);
+      response.a.pos.y = Math.floor(Math.random() * 32000);
+    }
+    return true;
   }
 }
 );
@@ -26,12 +67,12 @@ game.CheeseEntity = me.CollectableEntity.extend({
 game.EnemyEntity = me.Entity.extend({
   init: function(x, y, settings) {
     this._super(me.Entity, 'init', [x, y, {image: "white_enemy.png", width : 71, height : 128}]);
+    this.ammo = 0;
   }, 
 
   onCollision : function ( response, other) {
-    console.log("Collided with enemy!");
-    game.data.score--;
-    return false;
+      
+
   }
 
 })
@@ -43,7 +84,7 @@ game.EnemyEntity = me.Entity.extend({
 game.PlayerEntity = me.Entity.extend({
   /**
    * constructor
-   */
+   */ 
   init : function (x, y, settings) {
     // call the constructor
     this._super(me.Entity, 'init', [x, y, settings]);
@@ -61,8 +102,10 @@ game.PlayerEntity = me.Entity.extend({
     // set the standing animation as default
     this.renderable.setCurrentAnimation("stand");
     this.velx = 450;
+    this.body.collisionType = me.collision.types.PLAYER_OBJECT;
     this.maxX = 32000 - this.width;
     this.maxY = 32000 - this.height;
+    this.ammo = 0;
   },
 
   /*
@@ -70,12 +113,14 @@ game.PlayerEntity = me.Entity.extend({
    */
   update : function (dt) {
     me.collision.check(this);
+    game.LaserAngle = this.renderable.angle; 
     this.pos.y += this.velx * dt / 700 * Math.sin(this.renderable.angle - Math.PI / 2);
     this.pos.x += this.velx * dt / 700 * Math.cos(this.renderable.angle - Math.PI / 2);
     this._super(me.Sprite, "update", [dt]);
     if (me.input.isKeyPressed("left")) {
         this.renderable.angle -= 2 * (Math.PI / 180);
     }
+
 
     if (me.input.isKeyPressed("right")) {
         this.renderable.angle += 2 * (Math.PI / 180);
@@ -92,6 +137,11 @@ game.PlayerEntity = me.Entity.extend({
    */
   onCollision : function (response, other) {
     // Make all other objects solid
+    if (response.a.body.collisionType == me.collision.types.ACTION_OBJECT)
+    { 
+      this.ammo = Math.floor(this.ammo / 2);
+      game.data.score = this.ammo;
+    }
     return true;
   }
 });

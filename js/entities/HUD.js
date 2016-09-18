@@ -36,7 +36,7 @@ game.HUD.ScoreItem = me.Renderable.extend( {
   init : function (x, y) {
     // call the parent constructor
     // (size does not matter here)
-    this._super(me.Renderable, 'init', [x, y, 100, 100]);
+    this._super(me.Renderable, 'init', [x, y, 132, 100]);
 
     // create a font
     this.font = new me.BitmapFont("32x32_font", 32);
