@@ -21,7 +21,7 @@ game.HUD.Container = me.Container.extend({
         this.name = "HUD";
 
         // add our child score object at the top left corner
-        this.addChild(new game.HUD.ScoreItem(5, 5));
+        this.addChild(new game.HUD.ScoreItem(132, 25));
     }
 });
 
@@ -29,38 +29,41 @@ game.HUD.Container = me.Container.extend({
 /**
  * a basic HUD item to display score
  */
-game.HUD.ScoreItem = me.Renderable.extend({
-    /**
-     * constructor
-     */
-    init: function(x, y) {
+game.HUD.ScoreItem = me.Renderable.extend( {
+  /**
+   * constructor
+   */
+  init : function (x, y) {
+    // call the parent constructor
+    // (size does not matter here)
+    this._super(me.Renderable, 'init', [x, y, 100, 100]);
 
-        // call the parent constructor
-        // (size does not matter here)
-        this._super(me.Renderable, 'init', [x, y, 10, 10]);
+    // create a font
+    this.font = new me.BitmapFont("32x32_font", 32);
+    this.font.set("right");
 
-        // local copy of the global score
-        this.score = -1;
-    },
+    // local copy of the global score
+    this.score = -1;
+  },
 
-    /**
-     * update function
-     */
-    update : function () {
-        // we don't do anything fancy here, so just
-        // return true if the score has been updated
-        if (this.score !== game.data.score) {
-            this.score = game.data.score;
-            return true;
-        }
-        return false;
-    },
-
-    /**
-     * draw the score
-     */
-    draw : function (context) {
-        // draw it baby !
+  /**
+   * update function
+   */
+  update : function (dt) {
+    // we don't draw anything fancy here, so just
+    // return true if the score has been updated
+    if (this.score !== game.data.score) {
+      this.score = game.data.score;
+      return true;
     }
+    return false;
+  },
 
+  /**
+   * draw the score
+   */
+  draw : function (renderer) {
+    string = "R: " + game.data.score;
+    this.font.draw (renderer, string, this.pos.x, this.pos.y);
+  }
 });
